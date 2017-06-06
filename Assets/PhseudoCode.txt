@@ -1,0 +1,12 @@
+CameraController:
+    - speed
+    - zoom
+    - minZoom
+    - maxZoom
+    - FocusOnPlayer()
+	- MoveCamera()
+	- ZoomCamera()
+
+PlayerMover:
+	- speed
+	- MouseClickWatcher()
