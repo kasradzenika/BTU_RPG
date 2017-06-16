@@ -2,34 +2,59 @@
 
 public class CameraController : MonoBehaviour
 {
+    //mouse movemetn settings
     public float speed;
     public float zoom;
     public float farZoom;
     public float nearZoom;
-    
-    void Start ()
-    {
 
-	}
+    //flying settings
+    public Transform player;
+    public float stoppingDistance = 0.1f;
+    public bool isFlyingToPlayer = false;
+    public float flyingSpeed = 5f;
 	
 	void Update ()
     {
         MoveCamera();
         ZoomCamera();
 
+        //fly camera to player
         if (Input.GetKeyDown(KeyCode.F))
         {
-            FocusOnPlayer();
+            isFlyingToPlayer = true;
         }
 	}
 
-    //TODO: write this function
-    void FocusOnPlayer()
+    void MoveCamera()
     {
-        Debug.LogWarning("FUNCTION NOT IMPLEMENTED");
+        if(isFlyingToPlayer)
+        {
+            FlyCameraToPlayer();
+        }
+        else
+        {
+            MoveCameraWithMouse();
+        }
     }
 
-    void MoveCamera()
+    void FlyCameraToPlayer()
+    {
+        //stop flying to player, if near enough
+        Vector3 coordinateDifference = transform.position - player.position;
+        float distanceToPlayer = coordinateDifference.magnitude;
+
+        if (distanceToPlayer < stoppingDistance)
+        {
+            isFlyingToPlayer = false;
+            return;
+        }
+
+        //fly me to the player
+        transform.position = Vector3.Lerp(transform.position, player.position, flyingSpeed * Time.deltaTime);
+    }
+
+    void MoveCameraWithMouse()
     {
         Vector3 pos = transform.position;
 

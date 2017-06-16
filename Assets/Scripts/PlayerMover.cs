@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.AI;
+using Units;
 
 public class PlayerMover : MonoBehaviour
 {
@@ -22,10 +23,16 @@ public class PlayerMover : MonoBehaviour
             //cast ray and save information in raycastHit variable
             Physics.Raycast(ray, out raycastHit);
 
-            if (raycastHit.transform != null)
+            //clicked on the floor, move
+            if (raycastHit.transform.tag == "Floor")
             {
                 targetPosition = raycastHit.point;
                 GetComponent<NavMeshAgent>().SetDestination(targetPosition);
+            }
+            //clicked on enemy, attack
+            else if (raycastHit.transform.tag == "Enemy")
+            {
+                GetComponent<Soldier>().target = raycastHit.transform.GetComponent<Soldier>();
             }
         }
     }
